@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 ctrlc = "3.1.9"
+
+[[bin]]
+name = "loop_benchmark_rust"
+path = "loop_benchmark.rs"
