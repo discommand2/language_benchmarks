@@ -6,7 +6,7 @@ $futures = [];
 
 for ($i = 0; $i < 8; $i++) {
     $futures[] = $runtime->run(function ($i) {
-        echo ($i);
+        for ($j = 0; $j < 500; $j++) echo ($i);
         return 1;
     }, [$i]);
 }
