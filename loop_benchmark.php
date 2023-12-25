@@ -17,9 +17,8 @@ for ($i = 0; $i < $cpuCores; $i++) {
     });
 }
 
-$total_count = 0;
-foreach ($futures as $future) {
-    $total_count += $future->value();
-}
-
-echo "PHP " . phpversion() . " looped $total_count times.\n";
+pcntl_signal(SIGTERM, function () use (&$futures) {
+    $total_count = 0;
+    foreach ($futures as $future) $total_count += $future->value();
+    echo "PHP " . phpversion() . " looped $total_count times.\n";
+});
