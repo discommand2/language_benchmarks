@@ -13,4 +13,4 @@ for ($i = 0; $i < $cpuCores; $i++) {
 }
 $total_count = 0;
 foreach ($futures as $future) $total_count += $future->value();
-echo ("PHP " . phpversion() . " looped " . number_format($total_count) . "times\n");
+echo ("PHP " . phpversion() . " looped " . number_format($total_count) . " times.\n");
