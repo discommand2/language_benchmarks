@@ -31,7 +31,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
             $channel->send($countLoops);
             echo ("1,000,000 loops in thread $i\n");
             if ($shouldStop->poll()) { // Check if we should stop
-                return;
+                break;
             }
         }
     }, [$channel, $i, $shouldStop]);
