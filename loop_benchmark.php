@@ -8,14 +8,17 @@ $totalLoops = 0;
 $runtimes = [];
 $futures = [];
 pcntl_async_signals(true);
-pcntl_signal(SIGTERM, function ($signo) use ($totalLoops, $runtimes, $futures) {
-    echo ("Got here!");
-    echo "1 PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
+
+$handler = function ($signo) use (&$totalLoops, $runtimes, $futures) {
+    echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     foreach ($futures as $future) $future->kill();
     foreach ($runtimes as $runtime) $runtime->close();
-    echo "2 PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
+    echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     exit(0);
-});
+};
+
+pcntl_signal(SIGTERM, $handler);
+pcntl_signal(SIGINT, $handler);
 
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
@@ -25,7 +28,6 @@ for ($i = 0; $i < $cpuCount; $i++) {
                 // This loop will run a million times before moving on
             }
             $channel->send(1_000_000);
-            //echo ("1,000,000 loops in thread $i\n");
         }
     }, [$channel, $i]);
 }
