@@ -1,19 +1,15 @@
-public class LoopBenchmark {
+public class Main {
+    private static volatile long countLoops = 0;
 
     public static void main(String[] args) {
-        long startTime = System.nanoTime();
-        long endTime = startTime + 10_000_000_000L; // 10 seconds in nanoseconds
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                System.out.format("Java %s executed the loop %,d times before termination.%n", System.getProperty("java.version"), countLoops);
+            }
+        });
 
-        long countLoops = 0;
-
-        while (System.nanoTime() < endTime) {
+        while (true) {
             countLoops++;
         }
-
-        double perSecond = countLoops / 10.0;
-        String javaVersion = System.getProperty("java.version");
-
-        System.out.format("Java %s executed the loop %,d times in 10 seconds. (%,.1f/sec)%n", 
-                          javaVersion, countLoops, perSecond);
     }
 }
