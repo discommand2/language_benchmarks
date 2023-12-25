@@ -1,18 +1,19 @@
 <?php
 
-use parallel\{Runtime, Future, Channel};
+use parallel\{Runtime, Future, Channel, Events};
 
 $numCpus = shell_exec("nproc");
 $channel = Channel::make('loops');
-$stopChannel = Channel::make('stop');
+$stop = false;
 
-$ctrlcHandler = function ($signo) use ($channel, $stopChannel, &$runtimes) {
+$ctrlcHandler = function ($signo) use ($channel, &$stop, &$runtimes) {
+    global $stop;
+    $stop = true;
     $totalLoops = 0;
     while (($loops = $channel->recv()) !== null) {
         $totalLoops += $loops;
     }
     echo "PHP " . phpversion() . " looped $totalLoops times.\n";
-    $stopChannel->send(true);
     foreach ($runtimes as $runtime) {
         $runtime->kill();
     }
@@ -25,22 +26,18 @@ $runtimes = [];
 for ($i = 0; $i < $numCpus; $i++) {
     $runtimes[] = new Runtime();
 
-    $runtimes[$i]->run(function ($channel, $stopChannel) {
+    $runtimes[$i]->run(function ($channel) {
+        global $stop;
         while (true) {
             for ($j = 0; $j < 1000000; $j++) {
                 // This loop will run a million times before moving on
             }
-            try {
-                if ($stopChannel->recv(0.001)) {
-                    break;
-                }
-            } catch (\parallel\Channel\Error\Closed $e) {
-                // Channel was closed, break the loop
+            if ($stop) {
                 break;
             }
             $channel->send(1000000);
         }
-    }, [$channel, $stopChannel]);
+    }, [$channel]);
 }
 
 while (true) {
