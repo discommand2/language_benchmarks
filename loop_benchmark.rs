@@ -1,6 +1,6 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::io::Error;
+use std::io::{self, Write, Error};
 use signal_hook::{iterator::Signals, consts::SIGTERM};
 use rustc_version::{version};
 
@@ -15,6 +15,7 @@ fn main() -> Result<(), Error> {
             println!("Rust {} executed the loop {} times before termination.",
                      version().unwrap(),
                      count_loops_clone.load(Ordering::Relaxed));
+            io::stdout().flush().unwrap();
             std::process::exit(0);
         }
     });
