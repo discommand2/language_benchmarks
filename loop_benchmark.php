@@ -25,7 +25,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
                 // This loop will run a million times before moving on
             }
             $channel->send(1_000_000);
-            echo ("1,000,000 loops in thread $i\n");
+            //echo ("1,000,000 loops in thread $i\n");
         }
     }, [$channel, $i]);
 }
