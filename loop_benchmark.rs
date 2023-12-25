@@ -23,10 +23,8 @@ fn main() {
     for _ in 0..12 {
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
-            let mut local_counter = 0;
             loop {
-                local_counter += 1;
-                count_loops_clone.fetch_add(1, Ordering::SeqCst);
+                count_loops_clone.fetch_add(1, Ordering::Relaxed);
             }
         });
         handles.push(handle);
