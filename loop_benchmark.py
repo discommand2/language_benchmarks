@@ -10,11 +10,8 @@ def main():
 
     signal.signal(signal.SIGTERM, handler)
 
-    try:
-        while True:
-            count_loops += 1
-    finally:
-        print(f"Python {sys.version_info.major}.{sys.version_info.minor} executed the loop {count_loops:,} times before termination.")
+    while True:
+        count_loops += 1
 
 if __name__ == "__main__":
     main()
