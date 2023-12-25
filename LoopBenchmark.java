@@ -1,4 +1,4 @@
-public class Main {
+public class LoopBenchmark {
     private static volatile long countLoops = 0;
 
     public static void main(String[] args) {
