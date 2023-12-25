@@ -30,7 +30,7 @@ fn main() -> Result<(), Error> {
         count_loops.fetch_add(1, Ordering::Relaxed);
 
         let (lock, cvar) = &*pair;
-        let mut started = lock.lock().unwrap();
+        let started = lock.lock().unwrap(); // remove `mut` here
         if *started {
             let _guard = cvar.wait(started).unwrap();
             break;
