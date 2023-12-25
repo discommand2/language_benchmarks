@@ -14,11 +14,11 @@ func main() {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGTERM)
 
-	go func() {
+	go func(countLoops *int) {
 		<-sigs
-		fmt.Printf("Go %s executed the loop %d times.\n", goVersion, countLoops)
+		fmt.Printf("Go %s executed the loop %d times.\n", goVersion, *countLoops)
 		os.Exit(0)
-	}()
+	}(&countLoops)
 
 	for {
 		countLoops++
