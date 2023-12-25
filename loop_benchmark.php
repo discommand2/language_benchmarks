@@ -25,3 +25,4 @@ $total_count = 0;
 foreach ($futures as $future) {
     $total_count += $future->value();
 }
+echo "PHP " . phpversion() . " looped $total_count times.\n";
