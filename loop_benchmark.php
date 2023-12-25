@@ -1,16 +1,66 @@
 <?php
-// called by: 'timeout 10s php loop_benchmark.php'
-$cpuCores = shell_exec("nproc"); //
+
+use parallel\{Channel, Runtime, Events};
+
+// Number of loops each thread will perform before updating the count
+const LOOP_BATCH_SIZE = 1_000_000;
+
+// Function that each thread will execute
+$threadFunction = function (Channel $channel) {
+    $countLoops = 0;
+    while (true) {
+        for ($i = 0; $i < LOOP_BATCH_SIZE; $i++) {
+            // This loop will run a million times before moving on
+        }
+        $countLoops += LOOP_BATCH_SIZE;
+        $channel->send($countLoops);
+    }
+};
+
+// Create an event loop to listen for messages from threads
+$events = new Events();
+
+// Create a channel for communication
+$channel = Channel::make('countLoops', Channel::Infinite);
+
+// Create an array to store the runtime objects
 $runtimes = [];
-$futures = [];
-for ($i = 0; $i < 8; $i++) {
-    $runtimes[$i] = new \parallel\Runtime();
-    $futures[$i] = $runtimes[$i]->run(function ($i) {
-        for ($j = 0; $j < 5000; $j++) echo ($i);
-        return 1;
-    }, [$i]);
+
+// Create threads equal to the number of CPUs
+$cpuCount = parallel\Runtime::available();
+for ($i = 0; $i < $cpuCount; $i++) {
+    $runtime = new Runtime();
+    $runtimes[] = $runtime;
+    $runtime->run($threadFunction, [$channel]);
+    $events->addChannel($channel);
 }
-for ($j = 0; $j < 500; $j++) echo ($i);
-$total_count = 0;
-foreach ($futures as $future) $total_count += $future->value();
-echo ("PHP " . phpversion() . " looped " . number_format($total_count) . " times.\n");
+
+// Register a signal handler for SIGINT (Ctrl+C)
+pcntl_async_signals(true);
+pcntl_signal(SIGINT, function () use ($channel) {
+    $totalLoops = 0;
+    while ($channel->count()) {
+        $totalLoops += $channel->recv();
+    }
+    echo "PHP looped " . number_format($totalLoops) . " times.\n";
+    exit(0);
+});
+
+// Event loop to accumulate the count of loops from all threads
+$totalLoops = 0;
+while (true) {
+    $event = $events->poll();
+
+    if ($event->type === Events\Event\Type::Read) {
+        $totalLoops += $event->value;
+        $events->addChannel($channel);
+    }
+
+    // You can add some logic here to break the loop if needed
+}
+
+// Cleanup
+foreach ($runtimes as $runtime) {
+    $runtime->close();
+}
+Channel::close($channel);
