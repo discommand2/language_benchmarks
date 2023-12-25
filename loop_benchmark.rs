@@ -1,7 +1,7 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::io::Error;
-use signal_hook::{iterator::Signals, SIGTERM};
+use signal_hook::{iterator::Signals, consts::SIGTERM};
 use rustc_version::{version};
 
 fn main() -> Result<(), Error> {
