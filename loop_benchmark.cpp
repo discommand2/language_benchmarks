@@ -2,7 +2,7 @@
 #include <iostream>
 #include <locale>
 
-volatile register unsigned long long count_loops = 0;
+volatile unsigned long long count_loops = 0;
 
 void signalHandler(int signum) {
     std::cout.imbue(std::locale("en_US.UTF-8"));
