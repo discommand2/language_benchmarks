@@ -6,9 +6,10 @@ process.on('SIGTERM', () => {
 });
 
 function increment() {
-    while (count_loops % 1e6 !== 0) {
+    while (count_loops % 1e6 > 0) {
         ++count_loops;
     }
+    ++count_loops;
     setImmediate(increment);
 }
 
