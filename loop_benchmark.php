@@ -22,12 +22,12 @@ for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i]->run(function ($channel, $i) {
         $countLoops = 0;
         while (true) {
-            echo ($i);
-            for ($j = 0; $j < 1000000; $j++) {
+            for ($j = 0; $j < 1_000_000; $j++) {
                 // This loop will run a million times before moving on
             }
-            $countLoops += 1000000;
+            $countLoops += 1_000_000;
             $channel->send($countLoops);
+            echo ("1,000,000 loops in thread $i\n");
         }
     }, [$channel, $i]);
 }
