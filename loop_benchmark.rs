@@ -1,7 +1,6 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use ctrlc::set_handler;
-use rustc_version::{version};
 
 fn main() {
     let count_loops = Arc::new(AtomicUsize::new(0));
@@ -9,12 +8,12 @@ fn main() {
 
     set_handler(move || {
         println!("Rust {} executed the loop {} times before termination.",
-                 version().unwrap(),
-                 count_loops_clone.load(Ordering::Relaxed));
+                 std::env::consts::RUST_VERSION,
+                 count_loops_clone.load(Ordering::SeqCst));
         std::process::exit(0);
     }).expect("Error setting Ctrl-C handler");
 
     loop {
-        count_loops.fetch_add(1, Ordering::Relaxed);
+        count_loops.fetch_add(1, Ordering::SeqCst);
     }
 }
