@@ -18,3 +18,10 @@ With each iteration the following things occur:
 - Java 11.0.18 executed the loop 858,076,454 times in 10 seconds. (85,807,645.4/sec)
 - Rust 1.73.0 executed the loop 497,528,089 times in 10 seconds. (49,752,808/sec)
 - Go go1.21.3 executed the loop 410,261,149 times in 10 seconds. (41,026,114/sec)
+
+### My Server Specs
+
+- Model: Intel Xeon-E 2386G
+- Speed: 3.5 GHz (base) / 4.7 GHz (turbo)
+- Cores: 6 Threads: 12
+- RAM 3200Mhz
