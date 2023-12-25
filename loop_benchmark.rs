@@ -15,7 +15,9 @@ fn main() {
         std::process::exit(0);
     }).expect("Error setting Ctrl-C handler");
 
+    let mut local_counter = 0;
     loop {
-        count_loops.fetch_add(1, Ordering::SeqCst);
+        local_counter += 1;
+        count_loops.store(local_counter, Ordering::SeqCst);
     }
 }
