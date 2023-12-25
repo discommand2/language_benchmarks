@@ -27,7 +27,7 @@ $channel = Channel::make('countLoops', Channel::Infinite);
 $runtimes = [];
 
 // Create threads equal to the number of CPUs
-$cpuCount = parallel\Runtime::available();
+$cpuCount = shell_exec('nproc') ?: 1;
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtime = new Runtime();
     $runtimes[] = $runtime;
