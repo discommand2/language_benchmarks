@@ -19,8 +19,8 @@ fn main() -> Result<(), Error> {
                      count_loops_clone.load(Ordering::Relaxed));
             io::stdout().flush().unwrap();
 
-            let (lock, cvar) = &*pair2;
-            let mut started = lock.lock().unwrap();
+            let (lock, _cvar) = &*pair2;
+            let started = lock.lock().unwrap();
             *started = true;
             cvar.notify_one();
         }
@@ -29,8 +29,8 @@ fn main() -> Result<(), Error> {
     loop {
         count_loops.fetch_add(1, Ordering::Relaxed);
 
-        let (lock, cvar) = &*pair;
-        let mut started = lock.lock().unwrap();
+        let (lock, _cvar) = &*pair;
+        let started = lock.lock().unwrap();
         if *started {
             break;
         }
