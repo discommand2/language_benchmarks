@@ -3,10 +3,6 @@
 $cpuCores = shell_exec("nproc"); // Get the number of CPU cores
 $runtime = new \parallel\Runtime();
 
-pcntl_signal(SIGTERM, function () {
-    // Do nothing
-});
-
 $futures = [];
 for ($i = 0; $i < $cpuCores; $i++) {
     $futures[] = $runtime->run(function () {
@@ -25,4 +21,5 @@ $total_count = 0;
 foreach ($futures as $future) {
     $total_count += $future->value();
 }
+
 echo "PHP " . phpversion() . " looped $total_count times.\n";
