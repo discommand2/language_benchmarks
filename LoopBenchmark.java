@@ -1,17 +1,17 @@
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LoopBenchmark {
-    private static AtomicLong countLoops = new AtomicLong(0);
+    private static volatile long countLoops = 0;
 
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                System.out.println("Java " + System.getProperty("java.version") + " executed the loop " + countLoops + " times before termination.");
+                System.out.format("Java %s executed the loop %,d times before termination.%n", System.getProperty("java.version"), countLoops);
             }
         });
 
         while (true) {
-            countLoops.incrementAndGet();
+            countLoops++;
         }
     }
 }
