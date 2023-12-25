@@ -9,7 +9,7 @@ fn main() {
     let count_loops_clone = Arc::clone(&count_loops);
 
     set_handler(move || {
-        println!("Rust {} executed the loop {} times.",
+        println!("Rust {} incremented {} times.",
                  version().unwrap(),
                  count_loops_clone.load(Ordering::SeqCst).to_formatted_string(&Locale::en));
         std::process::exit(0);

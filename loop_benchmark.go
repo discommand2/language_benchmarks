@@ -19,7 +19,7 @@ func main() {
 
 	go func(countLoops *int64) {
 		<-sigs
-		fmt.Printf("Go %s executed the loop %s times.\n", goVersion, comma(*countLoops))
+		fmt.Printf("Go %s incremented %s times.\n", goVersion, comma(*countLoops))
 		os.Exit(0)
 	}(&countLoops)
 
