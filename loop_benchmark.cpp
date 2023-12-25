@@ -6,7 +6,7 @@ volatile unsigned long long count_loops = 0;
 
 void signalHandler(int signum) {
     std::cout.imbue(std::locale("en_US.UTF-8"));
-    std::cout << "C++" << __cplusplus << " executed the loop " << count_loops << " times before termination." << std::endl;
+    std::cout << "C++ (GCC " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << ") executed the loop " << count_loops << " times before termination." << std::endl;
     exit(signum);
 }
 
