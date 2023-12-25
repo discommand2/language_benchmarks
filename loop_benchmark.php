@@ -6,13 +6,8 @@ $futures = [];
 
 for ($i = 0; $i < $cpuCores; $i++) {
     $futures[] = $runtime->run(function () {
-        $running = true;
         $count_loops = 0;
-        pcntl_async_signals(true);
-        pcntl_signal(SIGTERM, function () use (&$running) {
-            $running = false;
-        });
-        while ($running) ++$count_loops;
+        while (true) ++$count_loops;
         return $count_loops;
     });
 }
