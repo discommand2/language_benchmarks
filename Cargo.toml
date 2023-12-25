@@ -5,6 +5,7 @@ edition = "2018"
 
 [dependencies]
 ctrlc = "3.1.9"
+rustc_version = "0.3.3"
 
 [[bin]]
 name = "loop_benchmark_rust"
