@@ -20,7 +20,7 @@ fn main() {
 
     let mut handles = vec![];
 
-    for _ in 0..4 {
+    for _ in 0..12 {
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
             let mut local_counter = 0;
