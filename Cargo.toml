@@ -7,6 +7,6 @@ edition = "2021"
 signal-hook = "0.3.10"
 rustc_version = "0.4.0"
 
-[[bin]]
+[bin]
 name = "loop_benchmark_rust"
 path = "loop_benchmark.rs"
