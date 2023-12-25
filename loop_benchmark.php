@@ -37,7 +37,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
 
 // Register a signal handler for SIGINT (Ctrl+C)
 pcntl_async_signals(true);
-pcntl_signal(SIGINT, function () use ($channel) {
+pcntl_signal(SIGTERM, function () use ($channel) {
     $totalLoops = 0;
     while ($channel->count()) {
         $totalLoops += $channel->recv();
