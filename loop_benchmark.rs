@@ -8,7 +8,7 @@ fn main() -> Result<(), Error> {
     let count_loops = Arc::new(AtomicUsize::new(0));
     let count_loops_clone = Arc::clone(&count_loops);
 
-    let signals = Signals::new(&[SIGTERM])?;
+    let mut signals = Signals::new(&[SIGTERM])?;
 
     std::thread::spawn(move || {
         for _ in signals.forever() {
