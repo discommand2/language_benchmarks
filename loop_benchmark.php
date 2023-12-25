@@ -11,7 +11,7 @@ pcntl_async_signals(true);
 
 $handler = function ($signo) use (&$totalLoops, &$runtimes, &$futures) {
     echo "SIGNAL $signo PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
-    foreach ($futures as $future) $future->kill();
+    foreach ($futures as $future) $future->cancel();
     foreach ($runtimes as $runtime) $runtime->close();
     echo "SIGNAL $signo PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     exit(0);
