@@ -5,7 +5,7 @@ def main():
     count_loops = 0
 
     def handler(signum, frame):
-        print(f"Python {sys.version_info.major}.{sys.version_info.minor} executed the loop {count_loops:,} times before termination.")
+        print(f"Python {sys.version_info.major}.{sys.version_info.minor} executed the loop {count_loops:,} times.")
         sys.exit(0)
 
     signal.signal(signal.SIGTERM, handler)
