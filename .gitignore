@@ -1,6 +1,5 @@
 loop_benchmark_c++
-LoopBenchmark.class
-'LoopBenchmark$1.class'
+*.class
 loop_benchmark_go
 loop_benchmark_rust
 Cargo.lock
