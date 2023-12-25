@@ -1,41 +1,26 @@
-use std::sync::{atomic::{AtomicUsize, Ordering}, Arc, Mutex, Condvar};
-use std::io::{self, Write, Error};
-use signal_hook::{iterator::Signals, consts::SIGTERM};
-use rustc_version::{version};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
+use signal_hook::{consts::SIGTERM, iterator::Signals};
 
-fn main() -> Result<(), Error> {
+fn main() {
+    // Create a shared atomic counter
     let count_loops = Arc::new(AtomicUsize::new(0));
+
+    // Clone the counter to be used in the signal handler
     let count_loops_clone = Arc::clone(&count_loops);
 
-    let pair = Arc::new((Mutex::new(false), Condvar::new()));
-    let pair2 = Arc::clone(&pair);
-
-    let mut signals = Signals::new(&[SIGTERM])?;
-
+    // Set up the signal handler for SIGTERM
+    let mut signals = Signals::new(&[SIGTERM]).expect("Error setting up signal handler");
     std::thread::spawn(move || {
         for _ in signals.forever() {
-            println!("Rust {} executed the loop {} times before termination.",
-                     version().unwrap(),
+            println!("Rust executed the loop {} times before termination.",
                      count_loops_clone.load(Ordering::Relaxed));
-            io::stdout().flush().unwrap();
-
-            let (lock, cvar) = &*pair2;
-            let mut started = lock.lock().unwrap();
-            *started = true;
-            cvar.notify_one();
+            std::process::exit(0);
         }
     });
 
+    // Loop indefinitely, incrementing the counter
     loop {
         count_loops.fetch_add(1, Ordering::Relaxed);
-
-        let (lock, cvar) = &*pair;
-        let started = lock.lock().unwrap();
-        if *started {
-            let _guard = cvar.wait(started).unwrap();
-            break;
-        }
     }
-
-    Ok(())
 }
