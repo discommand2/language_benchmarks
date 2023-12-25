@@ -30,7 +30,12 @@ for ($i = 0; $i < $numCpus; $i++) {
             for ($j = 0; $j < 1000000; $j++) {
                 // This loop will run a million times before moving on
             }
-            if ($stopChannel->recv()) {
+            try {
+                if ($stopChannel->recv(0.001)) {
+                    break;
+                }
+            } catch (\parallel\Channel\Error\Closed $e) {
+                // Channel was closed, break the loop
                 break;
             }
             $channel->send(1000000);
