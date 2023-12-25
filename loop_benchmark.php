@@ -21,6 +21,9 @@ pcntl_async_signals(true);
 pcntl_signal(SIGTERM, function () use (&$futures) {
     echo ("Got here\n");
     $total_count = 0;
-    foreach ($futures as $future) $total_count += $future->value();
+    foreach ($futures as $future) {
+        $future->cancel();
+        $total_count += $future->value();
+    }
     echo "PHP " . phpversion() . " looped $total_count times.\n";
 });
