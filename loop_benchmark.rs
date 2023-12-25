@@ -8,7 +8,7 @@ fn main() {
     let count_loops_clone = Arc::clone(&count_loops);
 
     set_handler(move || {
-        println!("Rust {} executed the loop {} times before termination.",
+        println!("Rust {} executed the loop {} times.",
                  version().unwrap(),
                  count_loops_clone.load(Ordering::SeqCst));
         std::process::exit(0);
