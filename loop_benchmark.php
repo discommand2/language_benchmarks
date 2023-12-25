@@ -1,8 +1,11 @@
 <?php
 // called by: 'timeout 10s php loop_benchmark.php'
-$cpuCores = shell_exec("nproc"); // Get the number of CPU cores
+$cpuCores = shell_exec("nproc"); //
+$runtimes = [];
+$futures = [];
 for ($i = 0; $i < 8; $i++) {
-    $futures[$i] = (new \parallel\Runtime())->run(function ($i) {
+    $runtimes[$i] = new \parallel\Runtime();
+    $futures[$i] = $runtimes[$i]->run(function ($i) {
         for ($j = 0; $j < 500; $j++) echo ($i);
         return 1;
     }, [$i]);
