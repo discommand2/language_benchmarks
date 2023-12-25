@@ -3,19 +3,25 @@
 $cpuCores = shell_exec("nproc"); // Get the number of CPU cores
 $runtime = new \parallel\Runtime();
 
+pcntl_signal(SIGTERM, function () {
+    // Do nothing
+});
+
 $futures = [];
 for ($i = 0; $i < $cpuCores; $i++) {
     $futures[] = $runtime->run(function () {
+        $running = true;
         $count_loops = 0;
         pcntl_async_signals(true);
-        pcntl_signal(SIGTERM, function () use (&$count_loops) {
-            die("PHP " . phpversion() . " looped " . number_format($count_loops) . " times.\n");
+        pcntl_signal(SIGTERM, function () use (&$running) {
+            $running = false;
         });
-        while (true) ++$count_loops;
+        while ($running) ++$count_loops;
+        return $count_loops;
     });
 }
 
-// Retrieve the results when ready
+$total_count = 0;
 foreach ($futures as $future) {
-    $result = $future->value();
+    $total_count += $future->value();
 }
