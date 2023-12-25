@@ -17,7 +17,6 @@ $handler = function ($signo) use (&$totalLoops, &$runtimes, &$futures) {
     exit(0);
 };
 
-pcntl_signal(SIGTERM, $handler);
 pcntl_signal(SIGINT, $handler);
 
 for ($i = 0; $i < $cpuCount; $i++) {
