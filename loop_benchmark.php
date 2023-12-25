@@ -34,7 +34,7 @@ for ($i = 0; $i < $numCpus; $i++) {
             if ($channel->poll()) {
                 $message = $channel->recv();
                 if ($message === 'stop') {
-                    return;
+                    break;
                 }
             }
             $channel->send(1000000);
