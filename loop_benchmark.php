@@ -2,17 +2,14 @@
 
 use parallel\{Channel, Runtime, Events};
 
-// Number of loops each thread will perform before updating the count
-const LOOP_BATCH_SIZE = 1_000_000;
-
 // Function that each thread will execute
 $threadFunction = function (Channel $channel) {
     $countLoops = 0;
     while (true) {
-        for ($i = 0; $i < LOOP_BATCH_SIZE; $i++) {
+        for ($i = 0; $i < 1_000_000; $i++) {
             // This loop will run a million times before moving on
         }
-        $countLoops += LOOP_BATCH_SIZE;
+        $countLoops += 1_000_000;
         $channel->send($countLoops);
     }
 };
