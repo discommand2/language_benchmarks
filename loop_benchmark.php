@@ -9,6 +9,7 @@ $runtimes = [];
 $futures = [];
 pcntl_async_signals(true);
 pcntl_signal(SIGTERM, function ($signo) use ($totalLoops, $runtimes, $futures) {
+    echo ("Got here!");
     foreach ($futures as $future) $future->kill();
     foreach ($runtimes as $runtime) $runtime->close();
     echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
