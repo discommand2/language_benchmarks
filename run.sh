@@ -1,4 +1,4 @@
-php loop_benchmark.php
+timeout 10s php loop_benchmark.php
 python loop_benchmark.py
 node loop_benchmark.js
 ./loop_benchmark_c++
