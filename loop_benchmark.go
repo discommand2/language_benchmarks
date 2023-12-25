@@ -23,6 +23,5 @@ func main() {
 
 	for {
 		countLoops++
-		time.Sleep(time.Millisecond) // This is to prevent the loop from consuming too much CPU
 	}
 }
