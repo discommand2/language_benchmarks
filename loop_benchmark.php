@@ -24,8 +24,8 @@ $handler = function ($signo) {
     exit(0);
 };
 
-pcntl_signal(SIGINT, $shutdown);
-pcntl_signal(SIGTERM, $shutdown);
+pcntl_signal(SIGINT, $handler);
+pcntl_signal(SIGTERM, $handler);
 
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
