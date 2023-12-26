@@ -3,7 +3,7 @@ program ParallelLoop
     use omp_lib
     implicit none
     
-    integer(C_INT), target :: x
+    integer(C_INT), pointer :: x
     integer(C_INT) :: count_loops_clone
     integer(C_INT), parameter :: iterations = 5000000
     integer(C_INT) :: i, total
@@ -12,6 +12,7 @@ program ParallelLoop
     
     !$OMP PARALLEL PRIVATE(x, i) SHARED(count_loops_clone)
     
+    allocate(x)
     x = 0
     do
         !$OMP DO
@@ -32,5 +33,7 @@ program ParallelLoop
     ! Print the total count after the loop
     total = count_loops_clone
     print *, "Total Count: ", total
+    
+    deallocate(x)
     
 end program ParallelLoop
