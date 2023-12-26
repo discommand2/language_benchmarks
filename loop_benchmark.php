@@ -20,7 +20,6 @@ register_shutdown_function(function () use (&$totalLoops, &$runtimes, &$futures,
 });
 
 $handler = function ($signo) {
-    echo "Signal $signo received\n";
     exit(0);
 };
 
@@ -40,14 +39,5 @@ for ($i = 0; $i < $cpuCount; $i++) {
 }
 
 while ($totalLoops += $channel->recv()) {
-    pcntl_signal_dispatch();
     //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
 }
-
-echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
-foreach ($futures as $i => $future) {
-    $future->cancel();
-    $runtimes[$i]->close();
-}
-$channel->close();
-exit(0);
