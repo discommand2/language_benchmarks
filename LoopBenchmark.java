@@ -28,7 +28,7 @@ public class LoopBenchmark {
             executor.submit(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     for (int j = 0; j < 5_000_000; j++) {
-                        // Loop body can be empty or do some work
+                        j = j;
                     }
                     totalLoops.addAndGet(5_000_000);
                 }
