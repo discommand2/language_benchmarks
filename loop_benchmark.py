@@ -1,4 +1,4 @@
-from multiprocessing import Pool, cpu_count, RawValue
+from multiprocessing import Process, cpu_count, RawValue
 from ctypes import c_uint
 
 class LoopBenchmark:
@@ -21,9 +21,13 @@ def loop_function(counter):
 
 def main():
     counter = LoopBenchmark()
+    processes = [Process(target=loop_function, args=(counter,)) for _ in range(cpu_count())]
 
-    with Pool(cpu_count()) as pool:
-        pool.map(loop_function, [counter] * cpu_count())
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
 
 if __name__ == "__main__":
     main()
