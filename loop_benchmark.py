@@ -19,12 +19,10 @@ class LoopBenchmark:
 
 # Function to be run by each process
 def loop_function(counter):
-    local_counter = 0
     while True:
-        # Simulate some work
         for _ in range(5_000_000):
+            # TODO: CPU busy work here
             pass
-        local_counter += 5_000_000
         counter.increment(5_000_000)
 
 # Signal handler for graceful shutdown

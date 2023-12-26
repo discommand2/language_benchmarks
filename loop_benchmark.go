@@ -45,12 +45,10 @@ func main() {
 	for i := 0; i < cpuCount; i++ {
 		go func() {
 			defer wg.Done()
-			var localLoops uint64
 			for {
 				for j := 0; j < 5000000; j++ {
-					// This loop simulates work
+           			// TODO: CPU busy work here
 				}
-				localLoops += 5000000
 				atomic.AddUint64(&totalLoops, 5000000)
 			}
 		}()

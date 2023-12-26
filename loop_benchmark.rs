@@ -35,9 +35,7 @@ let handle = thread::spawn(move || {
     let mut x = 0;
     loop {
         for _ in 0..5_000_000 {
-            unsafe {
-                write_volatile(&mut x, 0);
-            }
+           // TODO: CPU busy work here
         }
         count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
     }
