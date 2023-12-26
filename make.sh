@@ -9,3 +9,11 @@ javac LoopBenchmark.java
 
 echo "Compiling Rust..."
 cargo build --release
+#!/bin/bash
+
+echo "Compiling C#..."
+mkdir -p LoopBenchmark
+cd LoopBenchmark
+dotnet new console --force
+cp ../loop_benchmark.cs Program.cs
+dotnet publish -c Release -r linux-x64 --self-contained true
