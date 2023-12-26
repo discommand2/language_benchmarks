@@ -9,7 +9,6 @@ javac LoopBenchmark.java
 
 echo "Compiling Rust..."
 cargo build --release
-#!/bin/bash
 
 echo "Compiling C#..."
 mkdir -p LoopBenchmark
