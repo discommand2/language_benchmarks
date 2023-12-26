@@ -28,9 +28,11 @@ def main():
     def stop_processes(signal, frame):
         print(f"Received signal {signal}, terminating processes...")
         for p in processes:
-            p.terminate()
+            if p.is_alive():  # Only terminate processes that have been started
+                p.terminate()
         for p in processes:
-            p.join()
+            if p.is_alive():  # Only join processes that have been started
+                p.join()
         print(f"Total loops processed: {counter.value.value}")
         exit(0)
 
