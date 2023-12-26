@@ -5,6 +5,8 @@ use num_cpus;
 use ctrlc::set_handler;
 use rustc_version::{version};
 use num_format::{Locale, ToFormattedString};
+use nix::sched::{CpuSet, sched_setaffinity};
+use nix::unistd::Pid;
 
 fn main() {
     let count_loops = Arc::new(AtomicUsize::new(0));
@@ -21,12 +23,16 @@ fn main() {
 
     let mut handles = vec![];
 
-    for _ in 0..num_cpus::get() {
+    for i in 0..num_cpus::get() {
+        let mut cpuset = CpuSet::new();
+        cpuset.set(i).expect("Failed to set CPU");
+
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
+            sched_setaffinity(Pid::from_raw(0), &cpuset).expect("Failed to set affinity");
             loop {
                 for _ in 0..5_000_000 {
-                    // This loop will run a million times before moving on
+                    // This loop will run 5 million times before moving on
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }
