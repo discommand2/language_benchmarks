@@ -32,9 +32,7 @@ for ($i = 0; $i < $cpuCount; ++$i) {
         pcntl_signal(SIGINT, $handler);
         pcntl_signal(SIGTERM, $handler);
         while (true) {
-            $j = 0;
-            do ++$j;
-            while ($j < 5_000_000);
+            for ($j = 0; $j < 5_000_000; ++$j);
             $channel->send(5_000_000);
         }
     }, [$channel, $i]);
