@@ -1,43 +1,47 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
-	"strconv"
-	"strings"
-	"sync/atomic"
-	"syscall"
+    "fmt"
+    "os"
+    "os/signal"
+    "runtime"
+    "sync"
+    "sync/atomic"
+    "syscall"
 )
 
-var goVersion string
-
 func main() {
-	var countLoops int64
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGTERM)
+    var totalLoops uint64
+    cpuCount := runtime.NumCPU()
+    var wg sync.WaitGroup
+    wg.Add(cpuCount)
 
-	go func(countLoops *int64) {
-		<-sigs
-		fmt.Printf("Go %s incremented %s times.\n", goVersion, comma(*countLoops))
-		os.Exit(0)
-	}(&countLoops)
+    // Setting up channel to listen for interrupt signal
+    sigChan := make(chan os.Signal, 1)
+    signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	for {
-		atomic.AddInt64(&countLoops, 1)
-	}
-}
+    // Goroutine to handle the interrupt signal
+    go func() {
+        <-sigChan
+        fmt.Printf("Go looped %d times.\n", atomic.LoadUint64(&totalLoops))
+        os.Exit(0)
+    }()
 
-func comma(v int64) string {
-	s := strconv.FormatInt(v, 10)
-	var parts []string
-	for len(s) > 0 {
-		length := len(s)
-		if length > 3 {
-			length = 3
-		}
-		parts = append([]string{s[len(s)-length:]}, parts...)
-		s = s[:len(s)-length]
-	}
-	return strings.Join(parts, ",")
+    // Creating a goroutine for each CPU core
+    for i := 0; i < cpuCount; i++ {
+        go func() {
+            defer wg.Done()
+            var localLoops uint64
+            for {
+                for j := 0; j < 5000000; j++ {
+                    // This loop simulates work
+                }
+                localLoops += 5000000
+                atomic.AddUint64(&totalLoops, 5000000)
+            }
+        }()
+    }
+
+    // Wait for all goroutines to finish (they won't, as they are in an infinite loop)
+    wg.Wait()
 }
