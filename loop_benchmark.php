@@ -30,7 +30,6 @@ pcntl_signal(SIGTERM, $handler);
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
-        pcntl_async_signals(true);
         while (true) {
             for ($j = 0; $j < 1_000_000; $j++) {
                 // This loop will run a million times before moving on
@@ -41,5 +40,6 @@ for ($i = 0; $i < $cpuCount; $i++) {
 }
 
 while ($totalLoops += $channel->recv()) {
+    pcntl_signal_dispatch();
     //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
 }
