@@ -47,14 +47,15 @@ This is from my bare-metal linux dedicated server.
 - RAM Speed: 3200 MHz
 
 ```text
-Python 3.9.18 looped 4,040,000,000 times.
+Python 3.9.18 looped 4,020,000,000 times.
 Python 3.11.5 looped 15,032,704 times.
-Node.js v18.14.2 looped 267,725,000,000 times.
-C++ 11.4.1 looped 149,400,000,000 times.
-Java 11.0.18 looped 4,737,648,790,000,000 times.
-go1.21.3 looped 279,190,000,000 times.
-Rust 1.73.0 looped 5,093,341,890,000,000 times.
-PHP 8.3.0 looped 34,295,000,000 times.
+Python 3.12.0 looped 205,032,704 times.
+Node.js v18.14.2 looped 267,800,000,000 times.
+C++ 11.4.1 looped 154,660,000,000 times.
+Java 11.0.18 looped 4,826,964,645,000,000 times.
+go1.21.3 looped 279,385,000,000 times.
+Rust 1.73.0 looped 4,829,351,185,000,000 times.
+PHP 8.3.0 looped 33,960,000,000 times.
 ```
 
 ## Extending the Benchmarks
