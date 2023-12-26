@@ -15,15 +15,11 @@ def loop_function(counter):
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     signal.signal(signal.SIGTERM, signal.SIG_DFL)
 
-    local_counter = 0
     while True:
-        for _ in range(5_000_000):
+        for _ in range(1_000_000):  # Reduced number of iterations
             # TODO: CPU busy work here
             pass
-        local_counter += 5_000_000
-        if local_counter >= 100_000_000:  # Update shared counter every 100M iterations
-            counter.increment(local_counter)
-            local_counter = 0
+        counter.increment(1_000_000)
 
 def main():
     counter = LoopBenchmark()
