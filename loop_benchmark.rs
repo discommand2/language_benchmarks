@@ -34,8 +34,9 @@ fn main() {
             sched_setaffinity(Pid::from_raw(0), &cpuset).expect("Failed to set affinity");
             let mut j = 0;
             loop {
-                for _ in 0..5_000_000 {
-                    j += 1;
+                write_volatile(&mut j, 0);
+                while j < 5_000_000 {
+                    write_volatile(&mut j, j + 1);
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }
