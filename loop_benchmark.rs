@@ -25,10 +25,10 @@ fn main() {
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
             loop {
-                for _ in 0..1_000_000 {
+                for _ in 0..5_000_000 {
                     // This loop will run a million times before moving on
                 }
-                count_loops_clone.fetch_add(1000000, Ordering::Relaxed);
+                count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }
         });
         handles.push(handle);
