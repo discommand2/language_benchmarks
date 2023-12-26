@@ -29,9 +29,9 @@ def loop_function(counter):
 def shutdown_handler(signum, frame, counter, processes):
     print(f"Python {python_version()} looped {counter.get():,} times.")
     for process in processes:
-        process.terminate()  # Terminate each child process
+        os.kill(process.pid, signal.SIGINT)  # Send SIGINT to child process
     os._exit(0)
-
+    
 # Main function
 def main():
     counter = LoopBenchmark()
