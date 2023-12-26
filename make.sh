@@ -8,4 +8,4 @@ echo "Compiling Java..."
 javac LoopBenchmark.java
 
 echo "Compiling Rust..."
-cargo build > /dev/null 2>&1
+cargo build --release > /dev/null 2>&1
