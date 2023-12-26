@@ -43,3 +43,11 @@ while ($totalLoops += $channel->recv()) {
     pcntl_signal_dispatch();
     //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
 }
+
+echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
+foreach ($futures as $i => $future) {
+    $future->cancel();
+    $runtimes[$i]->close();
+}
+$channel->close();
+exit(0);
