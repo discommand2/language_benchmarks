@@ -3,11 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 class Program
 {
     private static long totalLoops = 0;
     private static CancellationTokenSource cts = new CancellationTokenSource();
+    private static bool messagePrinted = false;
 
     static async Task Main(string[] args)
     {
@@ -15,7 +17,11 @@ class Program
 
         Console.CancelKeyPress += (sender, eventArgs) =>
         {
-            Console.WriteLine($"C# .NET looped {totalLoops.ToString("N0", CultureInfo.InvariantCulture)} times.");
+            if (messagePrinted) return;
+
+            string netVersion = RuntimeInformation.FrameworkDescription;
+            Console.WriteLine($"{netVersion} looped {totalLoops.ToString("N0", CultureInfo.InvariantCulture)} times.");
+            messagePrinted = true;
             cts.Cancel();
             eventArgs.Cancel = true;
         };
