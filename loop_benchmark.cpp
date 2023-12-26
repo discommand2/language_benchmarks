@@ -17,16 +17,14 @@ void signalHandler(int signum)
 
 void loopFunction()
 {
-    unsigned long long localLoops = 0;
     while (running)
     {
         for (int j = 0; j < 5000000; ++j)
         {
             // TODO: CPU busy work here
         }
-        localLoops += 5000000;
+        totalLoops += 5000000;
     }
-    totalLoops += localLoops;
 }
 
 std::string formatNumber(unsigned long long number)
