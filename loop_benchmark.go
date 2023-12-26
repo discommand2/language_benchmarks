@@ -38,7 +38,7 @@ func main() {
 	go func() {
 		<-sigChan
 		bigTotalLoops := big.NewInt(0).SetUint64(atomic.LoadUint64(&totalLoops))
-		fmt.Printf("%s looped %s times\n", goVersion, comma(bigTotalLoops))
+		fmt.Printf("%s looped %s times.\n", goVersion, comma(bigTotalLoops))
 		os.Exit(0)
 	}()
 
