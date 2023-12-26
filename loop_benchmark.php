@@ -27,7 +27,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         $running = true;
         pcntl_async_signals(true);
-        $handler = function () {
+        $handler = function ($signo) {
             // Do Nothing
         };
         pcntl_signal(SIGINT, $handler);
