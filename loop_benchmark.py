@@ -23,11 +23,18 @@ def main():
     counter = LoopBenchmark()
     processes = [Process(target=loop_function, args=(counter,)) for _ in range(cpu_count())]
 
-    for p in processes:
-        p.start()
+    try:
+        for p in processes:
+            p.start()
 
-    for p in processes:
-        p.join()
+        for p in processes:
+            p.join()
+    except KeyboardInterrupt:
+        print("Interrupted by user, terminating processes...")
+        for p in processes:
+            p.terminate()
+        for p in processes:
+            p.join()
 
 if __name__ == "__main__":
     main()
