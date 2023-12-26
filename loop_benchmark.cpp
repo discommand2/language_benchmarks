@@ -19,10 +19,13 @@ void loopFunction()
 {
     while (running)
     {
+        // Below block commented out to simulate empty loop compiler optimizations in Java and Rust
+        /*
         for (int j = 0; j < 5000000; ++j)
         {
             // TODO: CPU busy work here
         }
+        */
         totalLoops += 5000000;
     }
 }
