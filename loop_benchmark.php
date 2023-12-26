@@ -20,6 +20,12 @@ $shutdown = function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
 };
 
 register_shutdown_function($shutdown);
+
+$handler = function ($signo) {
+    echo "Signal $signo received\n";
+    exit(0);
+};
+
 pcntl_signal(SIGINT, $shutdown);
 pcntl_signal(SIGTERM, $shutdown);
 
