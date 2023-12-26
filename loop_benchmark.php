@@ -28,7 +28,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
         $running = true;
         pcntl_async_signals(true);
         $handler = function () use (&$running, &$i) {
-            echo ("Shutting down thread $i\n");
+            //echo ("Shutting down thread $i\n");
             $running = false;
         };
         pcntl_signal(SIGINT, $handler);
