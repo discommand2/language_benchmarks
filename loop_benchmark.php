@@ -30,15 +30,19 @@ pcntl_signal(SIGTERM, $handler);
 
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
-    $futures[$i] = $runtimes[$i]->run(function ($channel, $i, $shutdownFunction) {
-        register_shutdown_function($shutdownFunction);
-        while (true) {
+    $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
+        $running = true;
+        register_shutdown_function(function () use (&$running, $i) {
+            echo ("Shutting down thread $i\n");
+            $running = false;
+        });
+        while ($running) {
             for ($j = 0; $j < 1_000_000; $j++) {
                 // This loop will run a million times before moving on
             }
             $channel->send(1_000_000);
         }
-    }, [$channel, $i, $shutdownFunction]);
+    }, [$channel, $i]);
 }
 
 while ($totalLoops += $channel->recv()) {
