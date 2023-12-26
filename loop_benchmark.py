@@ -1,3 +1,4 @@
+import signal
 from multiprocessing import Process, cpu_count, RawValue
 from ctypes import c_uint
 
@@ -6,7 +7,8 @@ class LoopBenchmark:
         self.value = RawValue(c_uint, 0)  # Shared among processes
 
     def increment(self, amount):
-        self.value.value += amount
+        with self.value.get_lock():  # ensure atomic operation
+            self.value.value += amount
 
 def loop_function(counter):
     local_counter = 0
@@ -23,18 +25,23 @@ def main():
     counter = LoopBenchmark()
     processes = [Process(target=loop_function, args=(counter,)) for _ in range(cpu_count())]
 
-    try:
-        for p in processes:
-            p.start()
-
-        for p in processes:
-            p.join()
-    except KeyboardInterrupt:
-        print("Interrupted by user, terminating processes...")
+    def stop_processes(signal, frame):
+        print(f"Received signal {signal}, terminating processes...")
         for p in processes:
             p.terminate()
         for p in processes:
             p.join()
+        print(f"Total loops processed: {counter.value.value}")
+        exit(0)
+
+    signal.signal(signal.SIGINT, stop_processes)
+    signal.signal(signal.SIGTERM, stop_processes)
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
 
 if __name__ == "__main__":
     main()
