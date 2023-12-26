@@ -9,7 +9,7 @@ $runtimes = [];
 $futures = [];
 pcntl_async_signals(true);
 
-$shutdownFunction = function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
+$shutdownFunction = function ($signo) use (&$totalLoops, &$runtimes, &$futures, $channel) {
     echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     foreach ($futures as $i => $future) {
         $future->cancel();
@@ -19,14 +19,8 @@ $shutdownFunction = function () use (&$totalLoops, &$runtimes, &$futures, $chann
     exit(0);
 };
 
-register_shutdown_function($shutdownFunction);
-
-$handler = function ($signo) {
-    exit(0);
-};
-
-pcntl_signal(SIGINT, $handler);
-pcntl_signal(SIGTERM, $handler);
+pcntl_signal(SIGINT, $shutdownFunction);
+pcntl_signal(SIGTERM, $shutdownFunction);
 
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
