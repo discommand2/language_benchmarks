@@ -54,7 +54,9 @@ int main() {
     }
 
     // Output the result
-    std::cout << "C++ looped " << formatNumber(totalLoops) << " times." << std::endl;
+    std::cout.imbue(std::locale("en_US.UTF-8"));
+    std::cout << "C++ " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ 
+              << " looped " << formatNumber(totalLoops) << " times." << std::endl;
 
     return 0;
 }
