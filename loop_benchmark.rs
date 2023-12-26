@@ -35,7 +35,7 @@ fn main() {
             let mut j = 0;
             loop {
                 for (j, _) in (0..5_000_000).enumerate() {
-                    // j now holds the current index
+                    // That's it. This is the loop.
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }
