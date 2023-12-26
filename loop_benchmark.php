@@ -9,7 +9,7 @@ $runtimes = [];
 $futures = [];
 pcntl_async_signals(true);
 
-$shutdown = function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
+register_shutdown_function(function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
     echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     foreach ($futures as $i => $future) {
         $future->cancel();
@@ -17,9 +17,7 @@ $shutdown = function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
     }
     $channel->close();
     exit(0);
-};
-
-register_shutdown_function($shutdown);
+});
 
 $handler = function ($signo) {
     echo "Signal $signo received\n";
