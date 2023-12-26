@@ -25,8 +25,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
         $handler = function ($signo) use ($i) {
-            echo "SIGNAL $signo PHP (Thread $i) " . "exited.\n";
-            exit(0);
+            echo "SIGNAL $signo PHP (Thread $i)";
         };
         pcntl_signal(SIGINT, $handler);
         while (true) {
@@ -39,5 +38,5 @@ for ($i = 0; $i < $cpuCount; $i++) {
 }
 
 while ($totalLoops += $channel->recv()) {
-    echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
+    //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
 }
