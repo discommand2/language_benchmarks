@@ -13,6 +13,19 @@ import (
 
 var goVersion string
 
+func comma(n *big.Int) string {
+    in := n.String()
+    var out []rune
+    l := len(in)
+    for i, r := range in {
+        out = append(out, r)
+        if (l-i-1)%3 == 0 && i != l-1 {
+            out = append(out, ',')
+        }
+    }
+    return string(out)
+}
+
 func main() {
 	var totalLoops uint64
 	cpuCount := runtime.NumCPU()
@@ -25,7 +38,7 @@ func main() {
 	go func() {
 		<-sigChan
 		bigTotalLoops := big.NewInt(0).SetUint64(atomic.LoadUint64(&totalLoops))
-		fmt.Printf("%s looped %#v times.\n", goVersion, bigTotalLoops)
+		fmt.Printf("%s looped %#v times.\n", goVersion, comma(bigTotalLoops))
 		os.Exit(0)
 	}()
 
@@ -42,6 +55,6 @@ func main() {
 			}
 		}()
 	}
-	
+
 	wg.Wait()
 }
