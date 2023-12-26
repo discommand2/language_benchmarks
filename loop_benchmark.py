@@ -26,8 +26,10 @@ def loop_function(counter):
         counter.increment(5_000_000)
 
 # Signal handler for graceful shutdown
-def shutdown_handler(signum, frame, counter):
+def shutdown_handler(signum, frame, counter, processes):
     print(f"Python {python_version()} looped {counter.get():,} times.")
+    for process in processes:
+        process.terminate()  # Terminate each child process
     os._exit(0)
 
 # Main function
@@ -51,15 +53,15 @@ def main():
     signal.signal(signal.SIGTERM, original_sigterm_handler)
 
     # Register signal handlers for the main process
-    signal.signal(signal.SIGINT, lambda signum, frame: shutdown_handler(signum, frame, counter))
-    signal.signal(signal.SIGTERM, lambda signum, frame: shutdown_handler(signum, frame, counter))
+    signal.signal(signal.SIGINT, lambda signum, frame: shutdown_handler(signum, frame, counter, processes))
+    signal.signal(signal.SIGTERM, lambda signum, frame: shutdown_handler(signum, frame, counter, processes))
 
     # Wait for all processes to complete
     try:
         for process in processes:
             process.join()
     except KeyboardInterrupt:
-        shutdown_handler(signal.SIGINT, None, counter)
+        shutdown_handler(signal.SIGINT, None, counter, processes)
 
 if __name__ == "__main__":
     main()
