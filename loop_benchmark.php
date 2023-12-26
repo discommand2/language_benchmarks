@@ -27,7 +27,7 @@ for ($i = 0; $i < $cpuCount; $i++) {
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         $running = true;
         pcntl_async_signals(true);
-        $handler = function () use (&$running, $i) {
+        $handler = function () use (&$running, &$i) {
             echo ("Shutting down thread $i\n");
             $running = false;
         };
