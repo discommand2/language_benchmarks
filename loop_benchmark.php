@@ -33,14 +33,14 @@ for ($i = 0; $i < $cpuCount; $i++) {
         pcntl_signal(SIGINT, $handler);
         pcntl_signal(SIGTERM, $handler);
         while ($running) {
-            for ($j = 0; $j < 10_000_000; $j++) {
+            for ($j = 0; $j < 5_000_000; $j++) {
                 // This loop will run a million times before moving on
             }
-            $channel->send(10_000_000);
+            $channel->send(5_000_000);
         }
     }, [$channel, $i]);
 }
 
 while ($totalLoops += $channel->recv()) {
-    //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
+    // Do Nothing else
 }
