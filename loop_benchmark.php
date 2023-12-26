@@ -42,5 +42,5 @@ for ($i = 0; $i < $cpuCount; $i++) {
 }
 
 while ($totalLoops += $channel->recv()) {
-    // Do Nothing else
+    // Do Nothing 
 }
