@@ -1,1 +1,1 @@
-timeout -s INT 10s target/debug/loop_benchmark_rust
+timeout -s INT 10s target/release/loop_benchmark_rust
