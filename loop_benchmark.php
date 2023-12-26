@@ -35,5 +35,5 @@ for ($i = 0; $i < $cpuCount; $i++) {
 }
 
 while ($totalLoops += $channel->recv()) {
-    echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
+    //echo ("PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n");
 }
