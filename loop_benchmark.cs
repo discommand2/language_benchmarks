@@ -20,7 +20,7 @@ class Program
             if (messagePrinted) return;
 
             string netVersion = RuntimeInformation.FrameworkDescription;
-            Console.WriteLine($"{netVersion} looped {totalLoops.ToString("N0", CultureInfo.InvariantCulture)} times.");
+            Console.WriteLine($"C#{netVersion} looped {totalLoops.ToString("N0", CultureInfo.InvariantCulture)} times.");
             messagePrinted = true;
             cts.Cancel();
             eventArgs.Cancel = true;
