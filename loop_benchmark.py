@@ -16,10 +16,10 @@ def loop_function(counter):
     signal.signal(signal.SIGTERM, signal.SIG_DFL)
 
     while True:
-        for _ in range(1_000_000):  # Reduced number of iterations
+        for _ in range(5_000_000):
             # TODO: CPU busy work here
             pass
-        counter.increment(1_000_000)
+        counter.increment(5_000_000)
 
 def main():
     counter = LoopBenchmark()
