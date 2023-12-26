@@ -35,7 +35,9 @@ fn main() {
             let mut x = 0;
             loop {
                 for _ in 0..5_000_000 {
-                    write_volatile(&mut x, 0);
+                    unsafe {
+                        write_volatile(&mut x, 0);
+                    }
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }
