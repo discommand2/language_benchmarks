@@ -19,10 +19,11 @@ void loopFunction()
 {
     while (running)
     {
+         /* /
         for (int j = 0; j < 5000000; ++j)
         {
             // TODO: CPU busy work here
-        }
+        } */
         totalLoops += 5000000;
     }
 }
