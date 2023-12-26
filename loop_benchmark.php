@@ -9,7 +9,7 @@ $runtimes = [];
 $futures = [];
 pcntl_async_signals(true);
 
-register_shutdown_function(function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
+$shutdownFunction = function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
     echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     foreach ($futures as $i => $future) {
         $future->cancel();
@@ -17,7 +17,9 @@ register_shutdown_function(function () use (&$totalLoops, &$runtimes, &$futures,
     }
     $channel->close();
     exit(0);
-});
+};
+
+register_shutdown_function($shutdownFunction);
 
 $handler = function ($signo) {
     exit(0);
@@ -28,14 +30,15 @@ pcntl_signal(SIGTERM, $handler);
 
 for ($i = 0; $i < $cpuCount; $i++) {
     $runtimes[$i] = new Runtime();
-    $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
+    $futures[$i] = $runtimes[$i]->run(function ($channel, $i, $shutdownFunction) {
+        register_shutdown_function($shutdownFunction);
         while (true) {
             for ($j = 0; $j < 1_000_000; $j++) {
                 // This loop will run a million times before moving on
             }
             $channel->send(1_000_000);
         }
-    }, [$channel, $i]);
+    }, [$channel, $i, $shutdownFunction]);
 }
 
 while ($totalLoops += $channel->recv()) {
