@@ -32,9 +32,8 @@ fn main() {
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
             sched_setaffinity(Pid::from_raw(0), &cpuset).expect("Failed to set affinity");
-            let mut j = 0;
+            let mut x = 0;
             loop {
-                write_volatile(&mut j, 0);
                 while j < 5_000_000 {
                     write_volatile(&mut j, j + 1);
                 }
