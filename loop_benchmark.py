@@ -11,6 +11,10 @@ class LoopBenchmark:
             self.value.value += amount
 
 def loop_function(counter):
+    # Reset signal handlers
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    signal.signal(signal.SIGTERM, signal.SIG_DFL)
+
     local_counter = 0
     while True:
         for _ in range(5_000_000):
@@ -26,14 +30,13 @@ def main():
     processes = [Process(target=loop_function, args=(counter,)) for _ in range(cpu_count())]
 
     def stop_processes(signal, frame):
-        print(f"Received signal {signal}, terminating processes...")
         for p in processes:
             if p.is_alive():  # Only terminate processes that have been started
                 p.terminate()
         for p in processes:
             if p.is_alive():  # Only join processes that have been started
                 p.join()
-        print(f"Total loops processed: {counter.value.value}")
+        print(f"Python looped {counter.value.value} times.")
         exit(0)
 
     signal.signal(signal.SIGINT, stop_processes)
