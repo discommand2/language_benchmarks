@@ -1,10 +1,10 @@
 import signal
-from multiprocessing import Process, cpu_count, RawValue
+from multiprocessing import Process, cpu_count, Value
 from ctypes import c_uint
 
 class LoopBenchmark:
     def __init__(self):
-        self.value = RawValue(c_uint, 0)  # Shared among processes
+        self.value = Value(c_uint, 0)  # Shared among processes
 
     def increment(self, amount):
         with self.value.get_lock():  # ensure atomic operation
