@@ -1,8 +1,14 @@
-use core::ptr::write_volatile;
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
+use std::thread;
+use num_cpus;
+use ctrlc::set_handler;
 use rustc_version::{version};
 use num_format::{Locale, ToFormattedString};
 use nix::sched::{CpuSet, sched_setaffinity};
 use nix::unistd::Pid;
+use core::ptr::write_volatile;
+
 
 fn main() {
     let count_loops = Arc::new(AtomicUsize::new(0));
