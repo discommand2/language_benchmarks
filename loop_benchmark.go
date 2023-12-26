@@ -19,11 +19,9 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(cpuCount)
 
-	// Setting up channel to listen for interrupt signal
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	// Goroutine to handle the interrupt signal
 	go func() {
 		<-sigChan
 		bigTotalLoops := big.NewInt(0).SetUint64(atomic.LoadUint64(&totalLoops))
@@ -31,7 +29,6 @@ func main() {
 		os.Exit(0)
 	}()
 
-	// Creating a goroutine for each CPU core
 	for i := 0; i < cpuCount; i++ {
 		go func() {
 			defer wg.Done()
@@ -45,7 +42,6 @@ func main() {
 			}
 		}()
 	}
-
-	// Wait for all goroutines to finish (they won't, as they are in an infinite loop)
+	
 	wg.Wait()
 }
