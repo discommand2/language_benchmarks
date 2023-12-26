@@ -35,6 +35,28 @@ Execute the `run.sh` script to run all benchmarks:
 
 Each program will utilize all available CPU cores to execute as many loops as possible within the 10-second window.
 
+#### Example Results
+
+This is from my bare-metal linux dedicated server.
+
+- CPU Model: Intel Xeon-E 2386G
+- CPU Cores/Threads: 6 cores, 12 threads
+- CPU Base Frequency: 3.5 GHz
+- CPU Max Turbo Frequency: 4.7 GHz
+- RAM: 64 GB ECC
+- RAM Speed: 3200 MHz
+
+```text
+Python 3.9.18 looped 4,040,000,000 times.
+Python 3.11.5 looped 15,032,704 times.
+Node.js v18.14.2 looped 267,725,000,000 times.
+C++ 11.4.1 looped 149,400,000,000 times.
+Java 11.0.18 looped 4,737,648,790,000,000 times.
+go1.21.3 looped 279,190,000,000 times.
+Rust 1.73.0 looped 5,093,341,890,000,000 times.
+PHP 8.3.0 looped 34,295,000,000 times.
+```
+
 ## Extending the Benchmarks
 
 The current benchmarks focus on busy loops, but the possibilities for extension are vast. Here are some ideas:
