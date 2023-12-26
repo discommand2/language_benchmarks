@@ -1,6 +1,8 @@
 import signal
 from multiprocessing import Process, cpu_count, Value
 from ctypes import c_uint
+import platform
+import locale
 
 class LoopBenchmark:
     def __init__(self):
@@ -32,7 +34,9 @@ def main():
         for p in processes:
             if p.is_alive():  # Only join processes that have been started
                 p.join()
-        print(f"Python looped {counter.value.value} times.")
+        locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+        formatted_number = locale.format_string("%d", counter.value.value, grouping=True)
+        print(f"Python {platform.python_version()} looped {formatted_number} times.")
         exit(0)
 
     signal.signal(signal.SIGINT, stop_processes)
