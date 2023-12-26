@@ -7,7 +7,6 @@ use rustc_version::{version};
 use num_format::{Locale, ToFormattedString};
 use nix::sched::{CpuSet, sched_setaffinity};
 use nix::unistd::Pid;
-use core::ptr::write_volatile;
 
 
 fn main() {
