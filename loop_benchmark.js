@@ -30,11 +30,11 @@ if (isMainThread) {
     });
   }
 
-  function shutdown() {
-    console.log(`Node.js looped ${totalLoops.toLocaleString()} times.`);
+function shutdown() {
+    console.log(`Node.js ${process.version} looped ${totalLoops.toLocaleString()} times.`);
     workers.forEach(worker => worker.terminate());
     process.exit(0);
-  }
+}
 } else {
   let loops = 0;
   while (true) {
