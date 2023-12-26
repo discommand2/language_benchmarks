@@ -11,6 +11,8 @@ import (
 	"syscall"
 )
 
+var goVersion string
+
 func main() {
 	var totalLoops uint64
 	cpuCount := runtime.NumCPU()
@@ -25,7 +27,7 @@ func main() {
 	go func() {
 		<-sigChan
 		bigTotalLoops := big.NewInt(0).SetUint64(atomic.LoadUint64(&totalLoops))
-		fmt.Printf("Go looped %#v times.\n", bigTotalLoops)
+		fmt.Printf("%s looped %#v times.\n", goVersion, bigTotalLoops)
 		os.Exit(0)
 	}()
 
