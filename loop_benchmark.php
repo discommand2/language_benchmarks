@@ -33,10 +33,10 @@ for ($i = 0; $i < $cpuCount; $i++) {
         pcntl_signal(SIGINT, $handler);
         pcntl_signal(SIGTERM, $handler);
         while ($running) {
-            for ($j = 0; $j < 1_000_000; $j++) {
+            for ($j = 0; $j < 10_000_000; $j++) {
                 // This loop will run a million times before moving on
             }
-            $channel->send(1_000_000);
+            $channel->send(10_000_000);
         }
     }, [$channel, $i]);
 }
