@@ -3,7 +3,8 @@ program ParallelLoop
     use omp_lib
     implicit none
     
-    integer(C_INT) :: x, count_loops_clone
+    integer(C_INT), target :: x
+    integer(C_INT) :: count_loops_clone
     integer(C_INT), parameter :: iterations = 5000000
     integer(C_INT) :: i, total
     
