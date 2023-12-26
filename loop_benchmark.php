@@ -22,7 +22,7 @@ $shutdownFunction = function ($signo) use (&$totalLoops, &$runtimes, &$futures, 
 pcntl_signal(SIGINT, $shutdownFunction);
 pcntl_signal(SIGTERM, $shutdownFunction);
 
-for ($i = 0; $i < $cpuCount; $i++) {
+for ($i = 0; $i < $cpuCount; ++$i) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
@@ -32,9 +32,8 @@ for ($i = 0; $i < $cpuCount; $i++) {
         pcntl_signal(SIGINT, $handler);
         pcntl_signal(SIGTERM, $handler);
         while (true) {
-            for ($j = 0; $j < 5_000_000; $j++) {
-                // This loop will run a million times before moving on
-            }
+            $j = 0;
+            while ($j < 5_000_000) ++$j;
             $channel->send(5_000_000);
         }
     }, [$channel, $i]);
