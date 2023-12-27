@@ -30,7 +30,7 @@ void loopFunction()
 std::string formatNumber(unsigned long long number)
 {
     std::stringstream ss;
-    ss.imbue(std::locale(""));
+    ss.imbue(std::locale("en_US.UTF-8"));
     ss << std::fixed << number;
     return ss.str();
 }
