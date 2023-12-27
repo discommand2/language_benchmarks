@@ -33,7 +33,7 @@ for ($i = 0; $i < $cpuCount / 2; ++$i) {
         pcntl_signal(SIGTERM, $handler);
         while (true) {
             for ($j = 0; $j < 5_000_000; ++$j) {
-                // TODO: CPU busy work here
+                $x = 1;
             }
             $channel->send(5_000_000);
         }
