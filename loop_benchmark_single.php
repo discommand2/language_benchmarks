@@ -6,4 +6,4 @@ $shutdownFunction = function () use (&$totalLoops) {
 pcntl_async_signals(true);
 pcntl_signal(SIGINT, $shutdownFunction);
 pcntl_signal(SIGTERM, $shutdownFunction);
-while (true) ++$totalLoops;
+for($totalLoops = 0; true; ++$totalLoops);
