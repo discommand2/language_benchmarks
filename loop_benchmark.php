@@ -2,14 +2,14 @@
 
 use parallel\{Runtime, Channel};
 
-$cpuCount = shell_exec("nproc");
-$channel = Channel::make('loopCounter', Channel::Infinite);
 $totalLoops = 0;
 $runtimes = [];
 $futures = [];
-pcntl_async_signals(true);
+$cpuCount = shell_exec("nproc");
+$channel = Channel::make('loopCounter', Channel::Infinite);
 
-$shutdownFunction = function ($signo) use (&$totalLoops, &$runtimes, &$futures, $channel) {
+pcntl_async_signals(true);
+pcntl_signal(SIGINT, function () use (&$totalLoops, &$runtimes, &$futures, $channel) {
     echo "PHP " . PHP_VERSION . " looped " . number_format($totalLoops) . " times.\n";
     foreach ($futures as $i => $future) {
         $future->cancel();
@@ -17,19 +17,17 @@ $shutdownFunction = function ($signo) use (&$totalLoops, &$runtimes, &$futures, 
     }
     $channel->close();
     exit(0);
-};
-
-pcntl_signal(SIGINT, $shutdownFunction);
-pcntl_signal(SIGTERM, $shutdownFunction);
+});
 
 for ($i = 0; $i < $cpuCount / 2; ++$i) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
-        pcntl_signal(SIGINT, function () {});
-        pcntl_signal(SIGTERM, function () {});
+        pcntl_signal(SIGINT, SIG_IGN);
         while (true) {
-            for ($j = 0; $j < 5_000_000; ++$j);
+            for ($j = 0; $j < 5_000_000; ++$j) {
+                // TODO: CPU busy work here
+            }
             $channel->send(5_000_000);
         }
     }, [$channel, $i]);
