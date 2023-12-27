@@ -1,9 +1,13 @@
+timeout -s SIGINT 10s python3.1 loop_benchmark.py
+timeout -s SIGINT 10s python3.8 loop_benchmark.py
 timeout -s SIGINT 10s python3.9 loop_benchmark.py
+timeout -s SIGINT 10s python3.10 loop_benchmark.py
 timeout -s SIGINT 10s python3.11 loop_benchmark.py
 timeout -s SIGINT 10s python3.12 loop_benchmark.py
 timeout -s SIGINT 10s node loop_benchmark.js
 timeout -s SIGINT 10s ./loop_benchmark_c++
 timeout -s SIGINT 10s LoopBenchmark/bin/Release/net6.0/linux-x64/publish/LoopBenchmark
+timeout -s SIGINT 10s LoopBenchmark/bin/Release/net7.0/linux-x64/publish/LoopBenchmark
 timeout -s SIGINT 10s java LoopBenchmark
 timeout -s SIGINT 10s ./loop_benchmark_go
 timeout -s SIGINT 10s target/release/loop_benchmark_rust
