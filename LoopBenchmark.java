@@ -24,7 +24,7 @@ public class LoopBenchmark {
         }));
 
         // Start threads
-        for (int i = 0; i < cpuCount; i++) {
+        for (int i = 0; i < cpuCount / 2; i++) {
             executor.submit(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     for (int j = 0; j < 5_000_000; j++) {
