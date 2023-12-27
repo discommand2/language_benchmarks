@@ -19,10 +19,12 @@ void loopFunction()
 {
     while (running)
     {
+        /* Comment out Empty For Loop to simulatate compiler optimization in other languages
         for (int j = 0; j < 5000000; ++j)
         {
             // TODO: CPU busy work here
         }
+        */
         totalLoops += 5000000;
     }
 }
