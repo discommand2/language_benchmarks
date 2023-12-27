@@ -2,7 +2,7 @@
 
 use parallel\{Runtime, Channel};
 
-$cpuCount = shell_exec("nproc") / 2;
+$cpuCount = shell_exec("nproc");
 $channel = Channel::make('loopCounter', Channel::Infinite);
 $totalLoops = 0;
 $runtimes = [];
