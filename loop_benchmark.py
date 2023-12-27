@@ -29,7 +29,7 @@ def loop_function(counter):
 def main():
     counter = LoopBenchmark()
     processes = [
-        Process(target=loop_function, args=(counter,)) for _ in range(cpu_count() / 2)
+        Process(target=loop_function, args=(counter,)) for _ in range(cpu_count() // 2)
     ]
 
     def stop_processes(signal, frame):
