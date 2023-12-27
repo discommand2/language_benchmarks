@@ -6,7 +6,10 @@ go build -ldflags "-X 'main.goVersion=$(go version | cut -d " " -f 3)'" -o loop_
 echo "Compiling Java..."
 javac LoopBenchmark.java
 
-echo "Compiling Rust..."
+echo "Compiling Rust (Debug)..."
+cargo build
+
+echo "Compiling Rust (Release)..."
 cargo build --release
 
 echo "Compiling C#..."
