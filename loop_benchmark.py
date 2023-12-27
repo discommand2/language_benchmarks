@@ -18,14 +18,14 @@ def worker_main(worker_id, total_loops_pipe):
 
 def shutdown(signum, frame, workers, total_loops_pipe):
     for worker in workers:
-        if os.getpid() != worker._parent_pid:
-            print(
-                f"Python {sys.version.split()[0]} looped {format(total_loops, ',')} times."
-            )
         if os.getpid() == worker._parent_pid:  # Check if current process is parent
             if worker.is_alive():
                 if worker._popen is not None:
                     worker.terminate()
+        else:
+            print(
+                f"Python {sys.version.split()[0]} looped {format(total_loops, ',')} times."
+            )
     total_loops_pipe.close()
     sys.exit(0)
 
