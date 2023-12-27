@@ -16,16 +16,12 @@ def worker_main(worker_id, total_loops_pipe):
         pass
 
 
-def shutdown(signum, frame, workers, total_loops_pipe):
+def shutdown(signum, frame, workers):
     for worker in workers:
         if os.getpid() == worker._parent_pid:  # Check if current process is parent
-            print(
-                f"Python {sys.version.split()[0]} looped {format(total_loops, ',')} times."
-            )
             if worker.is_alive():
                 if worker._popen is not None:
                     worker.terminate()
-    total_loops_pipe.close()
     sys.exit(0)
 
 
@@ -38,11 +34,11 @@ if __name__ == "__main__":
     # Set up signal handling for graceful shutdown
     signal.signal(
         signal.SIGINT,
-        lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
+        lambda signum, frame: shutdown(signum, frame, workers),
     )
     signal.signal(
         signal.SIGTERM,
-        lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
+        lambda signum, frame: shutdown(signum, frame, workers),
     )
 
     # Start worker processes
@@ -57,4 +53,7 @@ if __name__ == "__main__":
             total_loops += parent_conn.recv()
     except EOFError:
         # Pipe closed, exit the loop
+        print(
+            f"Python {sys.version.split()[0]} looped {format(total_loops, ',')} times."
+        )
         pass
