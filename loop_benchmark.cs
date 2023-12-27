@@ -13,7 +13,7 @@ class Program
 
     static async Task Main(string[] args)
     {
-        int cpuCount = Environment.ProcessorCount;
+        int cpuCount = Environment.ProcessorCount / 2;
 
         Console.CancelKeyPress += (sender, eventArgs) =>
         {
@@ -28,7 +28,7 @@ class Program
 
         Task[] tasks = new Task[cpuCount];
 
-        for (int i = 0; i < cpuCount / 2; i++)
+        for (int i = 0; i < cpuCount; i++)
         {
             tasks[i] = Task.Run(() => DoWork(cts.Token));
         }
