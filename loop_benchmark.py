@@ -1,60 +1,55 @@
+import multiprocessing
+import os
 import signal
-from multiprocessing import Process, cpu_count, Value
-from ctypes import c_uint
-import platform
-import locale
+import sys
 
 
-class LoopBenchmark:
-    def __init__(self):
-        self.value = Value(c_uint, 0)  # Shared among processes
-
-    def increment(self, amount):
-        with self.value.get_lock():  # ensure atomic operation
-            self.value.value += amount
-
-
-def loop_function(counter):
-    # Reset signal handlers
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
-    signal.signal(signal.SIGTERM, signal.SIG_DFL)
-
-    while True:
-        for _ in range(5_000_000):
+def worker_main(worker_id, total_loops_pipe):
+    try:
+        while True:
             # TODO: CPU busy work here
-            pass
-        counter.increment(5_000_000)
+            for _ in range(5_000_000):
+                pass
+            total_loops_pipe.send(5_000_000)
+    except KeyboardInterrupt:
+        # Handle the interrupt gracefully if needed
+        pass
 
 
-def main():
-    counter = LoopBenchmark()
-    processes = [
-        Process(target=loop_function, args=(counter,)) for _ in range(cpu_count() // 2)
-    ]
-
-    def stop_processes(signal, frame):
-        for p in processes:
-            if p.is_alive():  # Only terminate processes that have been started
-                p.terminate()
-        for p in processes:
-            if p.is_alive():  # Only join processes that have been started
-                p.join()
-        locale.setlocale(locale.LC_ALL, "en_US.utf8")
-        formatted_number = locale.format_string(
-            "%d", counter.value.value, grouping=True
-        )
-        print(f"Python {platform.python_version()} looped {formatted_number} times.")
-        exit(0)
-
-    signal.signal(signal.SIGINT, stop_processes)
-    signal.signal(signal.SIGTERM, stop_processes)
-
-    for p in processes:
-        p.start()
-
-    for p in processes:
-        p.join()
+def shutdown(signum, frame, workers, total_loops_pipe):
+    print(f"Python {sys.version.split()[0]} looped {format(total_loops, ',')} times.")
+    for worker in workers:
+        worker.terminate()
+    total_loops_pipe.close()
+    sys.exit(0)
 
 
 if __name__ == "__main__":
-    main()
+    cpu_count = os.cpu_count()
+    total_loops = 0
+    workers = []
+    parent_conn, child_conn = multiprocessing.Pipe()
+
+    # Set up signal handling for graceful shutdown
+    signal.signal(
+        signal.SIGINT,
+        lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
+    )
+    signal.signal(
+        signal.SIGTERM,
+        lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
+    )
+
+    # Start worker processes
+    for i in range(cpu_count // 2):
+        worker = multiprocessing.Process(target=worker_main, args=(i, child_conn))
+        workers.append(worker)
+        worker.start()
+
+    # Collect results from workers
+    try:
+        while True:
+            total_loops += parent_conn.recv()
+    except EOFError:
+        # Pipe closed, exit the loop
+        pass
