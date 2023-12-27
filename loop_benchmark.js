@@ -9,7 +9,7 @@ if (isMainThread) {
     process.on('SIGINT', shutdown);
     process.on('SIGTERM', shutdown);
 
-    for (let i = 0; i < cpuCount; i++) {
+    for (let i = 0; i < cpuCount / 2; i++) {
         const worker = new Worker(__filename);
         workers.push(worker);
 

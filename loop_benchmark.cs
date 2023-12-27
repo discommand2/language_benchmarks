@@ -28,7 +28,7 @@ class Program
 
         Task[] tasks = new Task[cpuCount];
 
-        for (int i = 0; i < cpuCount; i++)
+        for (int i = 0; i < cpuCount / 2; i++)
         {
             tasks[i] = Task.Run(() => DoWork(cts.Token));
         }

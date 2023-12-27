@@ -48,7 +48,7 @@ int main()
     std::vector<std::thread> threads;
 
     // Launch a thread for each CPU core
-    for (unsigned int i = 0; i < cpuCount; ++i)
+    for (unsigned int i = 0; i < cpuCount / 2; ++i)
     {
         threads.emplace_back(loopFunction);
     }

@@ -42,7 +42,7 @@ func main() {
 		os.Exit(0)
 	}()
 
-	for i := 0; i < cpuCount; i++ {
+	for i := 0; i < cpuCount / 2; i++ {
 		go func() {
 			defer wg.Done()
 			for {

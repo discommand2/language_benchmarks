@@ -22,7 +22,7 @@ $shutdownFunction = function ($signo) use (&$totalLoops, &$runtimes, &$futures, 
 pcntl_signal(SIGINT, $shutdownFunction);
 pcntl_signal(SIGTERM, $shutdownFunction);
 
-for ($i = 0; $i < $cpuCount; ++$i) {
+for ($i = 0; $i < $cpuCount / 2; ++$i) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
