@@ -23,7 +23,8 @@ for ($i = 0; $i < $cpuCount / 2; ++$i) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
-        pcntl_signal(SIGINT, SIG_IGN);
+        pcntl_signal(SIGINT, function () {
+        });
         while (true) {
             for ($j = 0; $j < 5_000_000; ++$j) {
                 // TODO: CPU busy work here
