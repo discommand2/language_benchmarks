@@ -26,20 +26,13 @@ for ($i = 0; $i < $cpuCount / 2; ++$i) {
     $runtimes[$i] = new Runtime();
     $futures[$i] = $runtimes[$i]->run(function ($channel, $i) {
         pcntl_async_signals(true);
-        $handler = function ($signo) {
-            // Do Nothing
-        };
-        pcntl_signal(SIGINT, $handler);
-        pcntl_signal(SIGTERM, $handler);
+        pcntl_signal(SIGINT, function () {});
+        pcntl_signal(SIGTERM, function () {});
         while (true) {
-            for ($j = 0; $j < 5_000_000; ++$j) {
-                $x = 1;
-            }
+            for ($j = 0; $j < 5_000_000; ++$j);
             $channel->send(5_000_000);
         }
     }, [$channel, $i]);
 }
 
-while ($totalLoops += $channel->recv()) {
-    // Do Nothing 
-}
+while ($totalLoops += $channel->recv());
