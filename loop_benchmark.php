@@ -22,12 +22,18 @@ pcntl_async_signals(true);
 pcntl_signal(SIGINT, $sigint);
 
 $run = function ($channel) {
+    $nothing = function () {
+        // Nothing
+    };
     pcntl_async_signals(true);
-    pcntl_signal(SIGINT, function () {
-    });
-
+    pcntl_signal(SIGINT, $nothing);
     $sendRuntime = new Runtime();
     $send = function ($value) use ($channel) {
+        $nothing = function () {
+            // Nothing
+        };
+        pcntl_async_signals(true);
+        pcntl_signal(SIGINT, $nothing);
         $channel->send($value);
     };
 
