@@ -33,7 +33,7 @@ Execute the `run.sh` script to run all benchmarks:
 ./run.sh
 ```
 
-Each program will utilize all available CPU cores to execute as many loops as possible within the 10-second window.
+Each program will utilize all available CPU cores (Threads / 2) to execute as many loops as possible within the 10-second window.
 
 #### Example Results
 
@@ -47,15 +47,17 @@ This is from my bare-metal linux dedicated server.
 - RAM Speed: 3200 MHz
 
 ```text
-Python 3.9.18 looped 4,020,000,000 times.
-Python 3.11.5 looped 15,032,704 times.
-Python 3.12.0 looped 205,032,704 times.
-Node.js v18.14.2 looped 267,800,000,000 times.
-C++ 11.4.1 looped 154,660,000,000 times.
-Java 11.0.18 looped 4,826,964,645,000,000 times.
-go1.21.3 looped 279,385,000,000 times.
-Rust 1.73.0 looped 4,829,351,185,000,000 times.
-PHP 8.3.0 looped 33,960,000,000 times.
+Python 3.9.18 looped 5,295,000,000 times.
+Python 3.11.5 looped 5,665,000,000 times.
+Python 3.12.0 looped 6,015,000,000 times.
+C++ 11.4.1 looped 123,145,000,000 times.
+PHP 8.4.0-dev looped 257,035,000,000 times.
+go1.21.3 looped 277,775,000,000 times.
+Node.js v18.14.2 looped 277,595,000,000 times.
+C#.NET 6.0.24 looped 278,550,000,000 times.
+Java 11.0.18 looped 4,106,230,020,000,000 times.
+Rust (Debug) 1.73.0 looped 18,585,000,000 times.
+Rust (Release) 1.73.0 looped 4,626,430,415,000,000 times.
 ```
 
 ## Extending the Benchmarks
