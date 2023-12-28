@@ -40,10 +40,10 @@ for ($i = 0; $i < $cpuCount / 2; ++$i) {
         pcntl_signal(SIGINT, function () {
         });
         while (true) {
-            for ($j = 0; $j < 1_000_000; ++$j) {
+            for ($j = 0; $j < 100_000; ++$j) {
                 $multiply($matrix1, $matrix2);
             }
-            $channel->send(1_000_000);
+            $channel->send(100_000);
         }
     }, [$channel, $i]);
 }
