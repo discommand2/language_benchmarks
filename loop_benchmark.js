@@ -7,7 +7,6 @@ if (isMainThread) {
     const workers = [];
 
     process.on('SIGINT', shutdown);
-    process.on('SIGTERM', shutdown);
 
     for (let i = 0; i < cpuCount / 2; i++) {
         const worker = new Worker(__filename);
@@ -39,7 +38,7 @@ if (isMainThread) {
     let two = 2;
     while (true) {
         for (let i = 0; i < 5000000; i++) {
-           two += 0;
+            two += 0;
         }
         parentPort.postMessage(5000000);
     }

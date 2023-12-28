@@ -38,9 +38,8 @@ std::string formatNumber(unsigned long long number)
 
 int main()
 {
-    // Register signal handler for SIGINT and SIGTERM
+    // Register signal handler for SIGINT
     std::signal(SIGINT, signalHandler);
-    std::signal(SIGTERM, signalHandler);
 
     // Get the number of CPU cores
     unsigned int cpuCount = std::thread::hardware_concurrency();

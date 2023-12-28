@@ -43,10 +43,6 @@ if __name__ == "__main__":
         signal.SIGINT,
         lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
     )
-    signal.signal(
-        signal.SIGTERM,
-        lambda signum, frame: shutdown(signum, frame, workers, parent_conn),
-    )
 
     # Start worker processes
     for i in range(cpu_count // 2):
