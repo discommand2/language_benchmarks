@@ -1,0 +1,8 @@
+Python 3.10.13 looped 86,185,000,000 times.
+PHP 8.4.0-dev looped 255,325,000,000 times.
+go1.21.3 looped 277,840,000,000 times.
+Node.js v18.14.2 looped 275,305,000,000 times.
+C#.NET 6.0.24 looped 278,710,000,000 times.
+Java 11.0.18 looped 5,040,044,335,000,000 times.
+Rust 1.73.0 looped 5,427,939,020,000,000 times.
+C++ 11.4.1 looped 5,418,901,575,000,000 times.
