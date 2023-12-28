@@ -35,9 +35,10 @@ fn main() {
         let count_loops_clone = Arc::clone(&count_loops);
         let handle = thread::spawn(move || {
             sched_setaffinity(Pid::from_raw(0), &cpuset).expect("Failed to set affinity");
+            let mut two = 2;
             loop {
                 for _ in 0..5_000_000 {
-                    // TODO: CPU busy work here
+                    two = 1 + 1;
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }

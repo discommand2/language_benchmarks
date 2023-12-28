@@ -36,9 +36,10 @@ if (isMainThread) {
         process.exit(0);
     }
 } else {
+    let two = 2;
     while (true) {
         for (let i = 0; i < 5000000; i++) {
-           // TODO: CPU busy work here
+           two = 1 + 1;
         }
         parentPort.postMessage(5000000);
     }

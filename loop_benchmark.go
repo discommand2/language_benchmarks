@@ -14,16 +14,16 @@ import (
 var goVersion string
 
 func comma(n *big.Int) string {
-    in := n.String()
-    var out []rune
-    l := len(in)
-    for i, r := range in {
-        out = append(out, r)
-        if (l-i-1)%3 == 0 && i != l-1 {
-            out = append(out, ',')
-        }
-    }
-    return string(out)
+	in := n.String()
+	var out []rune
+	l := len(in)
+	for i, r := range in {
+		out = append(out, r)
+		if (l-i-1)%3 == 0 && i != l-1 {
+			out = append(out, ',')
+		}
+	}
+	return string(out)
 }
 
 func main() {
@@ -42,12 +42,13 @@ func main() {
 		os.Exit(0)
 	}()
 
-	for i := 0; i < cpuCount / 2; i++ {
+	for i := 0; i < cpuCount/2; i++ {
 		go func() {
 			defer wg.Done()
+			two := 2
 			for {
 				for j := 0; j < 5000000; j++ {
-           			// TODO: CPU busy work here
+					two = 1 + 1
 				}
 				atomic.AddUint64(&totalLoops, 5000000)
 			}

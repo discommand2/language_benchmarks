@@ -44,12 +44,13 @@ class Program
 
     static void DoWork(CancellationToken token)
     {
+        int two = 2;
         while (!token.IsCancellationRequested)
         {
             // Simulate CPU work
             for (int j = 0; j < 5_000_000; j++)
             {
-                // TODO: busy work here
+                two = 1 + 1;
             }
             Interlocked.Add(ref totalLoops, 5_000_000);
         }

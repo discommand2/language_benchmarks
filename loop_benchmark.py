@@ -6,9 +6,11 @@ import sys
 
 def worker_main(worker_id, total_loops_pipe):
     try:
+        two = 2
         while True:
             # TODO: CPU busy work here
             for _ in range(5_000_000):
+                two = 1 + 1
                 pass
             total_loops_pipe.send(5_000_000)
     except KeyboardInterrupt:

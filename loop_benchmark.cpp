@@ -17,11 +17,12 @@ void signalHandler(int signum)
 
 void loopFunction()
 {
+    int two = 2;
     while (running)
     {
         for (int j = 0; j < 5000000; ++j)
         {
-            // TODO: CPU busy work here
+            two = 1 + 1;
         }
         totalLoops += 5000000;
     }
