@@ -39,7 +39,7 @@ if (isMainThread) {
     let two = 2;
     while (true) {
         for (let i = 0; i < 5000000; i++) {
-           two = 1 + 1;
+           two += 0;
         }
         parentPort.postMessage(5000000);
     }

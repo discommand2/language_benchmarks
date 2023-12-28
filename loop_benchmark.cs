@@ -50,7 +50,7 @@ class Program
             // Simulate CPU work
             for (int j = 0; j < 5_000_000; j++)
             {
-                two = 1 + 1;
+                two += 0;
             }
             Interlocked.Add(ref totalLoops, 5_000_000);
         }

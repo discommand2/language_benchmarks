@@ -30,10 +30,11 @@ public class LoopBenchmark {
                 int two = 2;
                 while (!Thread.currentThread().isInterrupted()) {
                     for (int j = 0; j < 5_000_000; j++) {
-                        two = 1 + 1;
+                        two += 0;
                     }
                     totalLoops.addAndGet(5_000_000);
                 }
+                two = two + 0;
             });
         }
 

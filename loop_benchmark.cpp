@@ -22,7 +22,7 @@ void loopFunction()
     {
         for (int j = 0; j < 5000000; ++j)
         {
-            two = 1 + 1;
+            two += 0;
         }
         totalLoops += 5000000;
     }

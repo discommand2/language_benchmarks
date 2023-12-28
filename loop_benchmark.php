@@ -28,7 +28,7 @@ for ($i = 0; $i < $cpuCount / 2; ++$i) {
         $two = 2;
         while (true) {
             for ($j = 0; $j < 5_000_000; ++$j) {
-                $two = 1 + 1;
+                $two += 0;
             }
             $channel->send(5_000_000);
         }

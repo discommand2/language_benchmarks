@@ -38,7 +38,7 @@ fn main() {
             let mut two = 2;
             loop {
                 for _ in 0..5_000_000 {
-                    two = 1 + 1;
+                    two += 0;
                 }
                 count_loops_clone.fetch_add(5_000_000, Ordering::Relaxed);
             }

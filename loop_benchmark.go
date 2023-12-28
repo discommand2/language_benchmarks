@@ -48,7 +48,7 @@ func main() {
 			two := 2
 			for {
 				for j := 0; j < 5000000; j++ {
-					two = two + 1 - 1
+					two += 0
 				}
 				atomic.AddUint64(&totalLoops, 5000000)
 			}
